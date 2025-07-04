@@ -3,10 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <title>Snake</title>
+        <link rel="stylesheet" href="/css/tictactoe.css">
+
     <script type="text/javascript" src="snake.js"></script>
   </head>
-  <body>
-    <a href="match3.html">match3</a>
+  <center><body>
     <canvas id="viewport" width="640" height="480"></canvas>
+    <div id="endGame">
+      <input
+        type="button"
+        value="Restart"
+        id="restartButton"
+        onclick="restartButton()"
+      />
+    </div>
   </body>
+  </center>
 </html>

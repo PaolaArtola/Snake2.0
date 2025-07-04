@@ -1,0 +1,67 @@
+/* Reset esencial */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Fondo general y layout base */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+}
+
+/* Título principal */
+.title {
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+/* Contenedor del menú con grid responsive */
+.game-menu {
+  width: 100%;
+  max-width: 1000px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Tarjetas de juego */
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Imagen de la tarjeta */
+.game-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Título del juego */
+.game-title {
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Efecto hover para resaltar la tarjeta */
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
