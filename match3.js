@@ -73,9 +73,9 @@ window.onload = function() {
     // Game Over
     var gameover = false;
     
-    var buttons = [ { x: 30, y: 240, width: 150, height: 50, text: "New Game"},
-                    { x: 30, y: 300, width: 150, height: 50, text: "Show Moves"},
-                    { x: 30, y: 360, width: 150, height: 50, text: "Enable AI Bot"}];
+    var buttons = [ { x: 30, y: 240, width: 150, height: 50, text: "Juagar de nuevo"},
+                    { x: 30, y: 300, width: 150, height: 50, text: "Mostrar"},
+                    { x: 30, y: 360, width: 150, height: 50, text: "IA Bot"}];
     
     function init() {
         canvas.addEventListener("mousemove", onMouseMove);
@@ -215,7 +215,7 @@ window.onload = function() {
         
         context.fillStyle = "#000000";
         context.font = "24px Verdana";
-        drawCenterText("Score:", 30, level.y+40, 150);
+        drawCenterText("Puntaje:", 30, level.y+40, 150);
         drawCenterText(score, 30, level.y+70, 150);
         
         drawButtons();

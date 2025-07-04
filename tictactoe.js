@@ -3,7 +3,7 @@ const squares = document.getElementsByClassName("square");
 const players = ["X", "O"];
 let currentPlayer = players[0];
 const endMessage = document.createElement("h2");
-endMessage.textContent = `X's turn!`;
+endMessage.textContent = `Es turno de X!`;
 endMessage.style.marginTop = "30px";
 endMessage.style.textAlign = "center";
 board.after(endMessage);
@@ -28,19 +28,19 @@ for (let i = 0; i < squares.length; i++) {
     squares[i].textContent = currentPlayer;
     if (checkWin(currentPlayer)) {
       someoneWon = true;
-      endMessage.textContent = `Game over! ${currentPlayer} wins!`;
+      endMessage.textContent = `Game over! ${currentPlayer} gana!`;
       return;
     }
     if (checkTie()) {
       someoneWon = true;
-      endMessage.textContent = `Game is tied!`;
+      endMessage.textContent = `Han empatado!`;
       return;
     }
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
     if (currentPlayer == players[0]) {
-      endMessage.textContent = `X's turn!`;
+      endMessage.textContent = `Es turno de X!`;
     } else {
-      endMessage.textContent = `O's turn!`;
+      endMessage.textContent = `Es turno de O!`;
     }
   });
 }
@@ -73,6 +73,6 @@ function restartButton() {
   for (let i = 0; i < squares.length; i++) {
     squares[i].textContent = "";
   }
-  endMessage.textContent = `X's turn!`;
+  endMessage.textContent = `Es turno de X!`;
   currentPlayer = players[0];
 }
