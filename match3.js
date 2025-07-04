@@ -20,6 +20,22 @@
 
 // The function gets called when the window is fully loaded
 window.onload = function() {
+
+    const imagen_a = new Image();
+    imagen_a.src = "balon.png";
+    const imagen_b = new Image();
+    imagen_b.src = "balonb.png";
+    const imagen_c = new Image();
+    imagen_c.src = "balonc.png";
+    const imagen_d = new Image();
+    imagen_d.src = "balond.png";
+    const imagen_e = new Image();
+    imagen_e.src = "balone.png";
+    const imagen_f = new Image();
+    imagen_f.src = "balonf.png";
+    const imagen_g = new Image();
+    imagen_g.src = "balong.png";
+
     // Get the canvas and context
     var canvas = document.getElementById("viewport");
     var context = canvas.getContext("2d");
@@ -321,7 +337,7 @@ window.onload = function() {
         // Draw title
         context.fillStyle = "#ffffff";
         context.font = "24px Verdana";
-        context.fillText("Match3 Example - Rembound.com", 10, 30);
+        context.fillText("Match3", 10, 30);
         
         // Display fps
         context.fillStyle = "#ffffff";
@@ -416,6 +432,53 @@ window.onload = function() {
     // Draw a tile with a color
     function drawTile(x, y, r, g, b) {
         context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        if (r == 0 && g == 0 && b == 0) {
+            context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [255, 128, 128],
+        if (r === 255 && g === 128 && b === 128) {
+            context.drawImage(imagen_a, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [128, 255, 128],
+        if (r === 128 && g === 255 && b === 128) {
+            context.drawImage(imagen_b, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [128, 128, 255],
+        if (r === 128 && g === 128 && b === 255) {
+            context.drawImage(imagen_c, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [255, 255, 128],
+        if (r === 255 && g === 255 && b === 128) {
+            context.drawImage(imagen_d, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [255, 128, 255],
+        if (r === 255 && g === 128 && b === 255) {
+            context.drawImage(imagen_e, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [128, 255, 255],
+        if (r === 128 && g === 255 && b === 255) {
+            context.drawImage(imagen_f, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [255, 255, 255]
+        if (r === 255 && g === 255 && b === 255) {
+            context.drawImage(imagen_g, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
+        // [255, 0, 0]
+        if (r === 255 && g === 0 && b === 0) {
+            return
+            context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+            return
+        }
         context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
     
