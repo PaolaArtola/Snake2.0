@@ -167,8 +167,8 @@ window.onload = function () {
   // Variables
   var score = 0; // Score
   var gameover = true; // Game is over
-  var gameovertime = 1; // How long we have been game over
-  var gameoverdelay = 0.5; // Waiting time after game over
+  var gameovertime = 1; 
+  var gameoverdelay = 0.5; 
 
   // Inicia el juego
   function init() {
@@ -349,19 +349,15 @@ window.onload = function () {
       // Calculate fps
       fps = Math.round(framecount / fpstime);
 
-      // Reset time and framecount
       fpstime = 0;
       framecount = 0;
     }
 
-    // Increase time and framecount
     fpstime += dt;
     framecount++;
   }
 
-  // Render the game
   function render() {
-    // Draw background
     context.fillStyle = "#577ddb";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -370,13 +366,13 @@ window.onload = function () {
 
     // Game over
     if (gameover) {
-      context.fillStyle = "rgba(0, 0, 0, 0.5)";
+      context.fillStyle = "rgba(237, 228, 228, 0.5)";
       context.fillRect(0, 0, canvas.width, canvas.height);
 
       context.fillStyle = "#ffffff";
       context.font = "24px Verdana";
       drawCenterText(
-        "Press any key to start!",
+        "Presiona cualquier tecla para continuar!",
         0,
         canvas.height / 2,
         canvas.width
@@ -384,32 +380,24 @@ window.onload = function () {
     }
   }
 
-  // Draw the level tiles
   function drawLevel() {
     for (var i = 0; i < level.columns; i++) {
       for (var j = 0; j < level.rows; j++) {
-        // Get the current tile and location
         var tile = level.tiles[i][j];
         var tilex = i * level.tilewidth;
         var tiley = j * level.tileheight;
 
-        // Draw tiles based on their type
         if (tile == 0) {
-          // Empty space
           context.fillStyle = "#f7e697";
           context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
         } else if (tile == 1) {
-          // Wall
           context.fillStyle = "#bcae76";
           context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
         } else if (tile == 2) {
-          // Apple
 
-          // Draw apple background
           context.fillStyle = "#f7e697";
           context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
 
-          // Draw the apple image
           var tx = 0;
           var ty = 3;
           var tilew = 64;
@@ -430,9 +418,7 @@ window.onload = function () {
     }
   }
 
-  // Draw the snake
   function drawSnake() {
-    // Loop over every snake segment
     for (var i = 0; i < snake.segments.length; i++) {
       var segment = snake.segments[i];
       var segx = segment.x;
@@ -440,13 +426,11 @@ window.onload = function () {
       var tilex = segx * level.tilewidth;
       var tiley = segy * level.tileheight;
 
-      // Sprite column and row that gets calculated
       var tx = 0;
       var ty = 0;
 
       if (i == 0) {
-        // Head; Determine the correct image
-        var nseg = snake.segments[i + 1]; // Next segment
+        var nseg = snake.segments[i + 1]; 
         if (segy < nseg.y) {
           // Up
           tx = 3;
@@ -465,7 +449,6 @@ window.onload = function () {
           ty = 1;
         }
       } else if (i == snake.segments.length - 1) {
-        // Tail; Determine the correct image
         var pseg = snake.segments[i - 1]; // Prev segment
         if (pseg.y < segy) {
           // Up
@@ -533,7 +516,6 @@ window.onload = function () {
         }
       }
 
-      // Draw the image of the snake part
       context.drawImage(
         tileimage,
         tx * 64,
@@ -548,32 +530,26 @@ window.onload = function () {
     }
   }
 
-  // Draw text that is centered
   function drawCenterText(text, x, y, width) {
     var textdim = context.measureText(text);
     context.fillText(text, x + (width - textdim.width) / 2, y);
   }
 
-  // Get a random int between low and high, inclusive
   function randRange(low, high) {
     return Math.floor(low + Math.random() * (high - low + 1));
   }
 
-  // Mouse event handlers
   function onMouseDown(e) {
-    // Get the mouse position
     var pos = getMousePos(canvas, e);
 
     if (gameover) {
       // Start a new game
       tryNewGame();
     } else {
-      // Change the direction of the snake
       snake.direction = (snake.direction + 1) % snake.directions.length;
     }
   }
 
-  // Keyboard event handler
   function onKeyDown(e) {
     if (gameover) {
       tryNewGame();
@@ -600,14 +576,12 @@ window.onload = function () {
         }
       }
 
-      // Grow for demonstration purposes
       if (e.keyCode == 32) {
         snake.grow();
       }
     }
   }
 
-  // Get the mouse position
   function getMousePos(canvas, e) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -620,6 +594,5 @@ window.onload = function () {
     };
   }
 
-  // Call init to start the game
   init();
 };

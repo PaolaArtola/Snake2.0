@@ -135,82 +135,59 @@ window.onload = function() {
             animationtime += dt;
             
             if (animationstate == 0) {
-                // Clusters need to be found and removed
                 if (animationtime > animationtimetotal) {
-                    // Find clusters
                     findClusters();
                     
                     if (clusters.length > 0) {
-                        // Add points to the score
                         for (var i=0; i<clusters.length; i++) {
-                            // Add extra points for longer clusters
                             score += 100 * (clusters[i].length - 2);;
                         }
                     
-                        // Clusters found, remove them
                         removeClusters();
                         
-                        // Tiles need to be shifted
                         animationstate = 1;
                     } else {
-                        // No clusters found, animation complete
                         gamestate = gamestates.ready;
                     }
                     animationtime = 0;
                 }
             } else if (animationstate == 1) {
-                // Tiles need to be shifted
                 if (animationtime > animationtimetotal) {
-                    // Shift tiles
                     shiftTiles();
                     
-                    // New clusters need to be found
                     animationstate = 0;
                     animationtime = 0;
                     
-                    // Check if there are new clusters
                     findClusters();
                     if (clusters.length <= 0) {
-                        // Animation complete
                         gamestate = gamestates.ready;
                     }
                 }
             } else if (animationstate == 2) {
-                // Swapping tiles animation
                 if (animationtime > animationtimetotal) {
-                    // Swap the tiles
                     swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
                     
-                    // Check if the swap made a cluster
                     findClusters();
                     if (clusters.length > 0) {
-                        // Valid swap, found one or more clusters
-                        // Prepare animation states
                         animationstate = 0;
                         animationtime = 0;
                         gamestate = gamestates.resolve;
                     } else {
-                        // Invalid swap, Rewind swapping animation
                         animationstate = 3;
                         animationtime = 0;
                     }
                     
-                    // Update moves and clusters
                     findMoves();
                     findClusters();
                 }
             } else if (animationstate == 3) {
-                // Rewind swapping animation
                 if (animationtime > animationtimetotal) {
-                    // Invalid swap, swap back
                     swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
                     
-                    // Animation complete
                     gamestate = gamestates.ready;
                 }
             }
             
-            // Update moves and clusters
             findMoves();
             findClusters();
         }
@@ -218,57 +195,44 @@ window.onload = function() {
     
     function updateFps(dt) {
         if (fpstime > 0.25) {
-            // Calculate fps
             fps = Math.round(framecount / fpstime);
             
-            // Reset time and framecount
             fpstime = 0;
             framecount = 0;
         }
         
-        // Increase time and framecount
         fpstime += dt;
         framecount++;
     }
     
-    // Draw text that is centered
     function drawCenterText(text, x, y, width) {
         var textdim = context.measureText(text);
         context.fillText(text, x + (width-textdim.width)/2, y);
     }
     
-    // Render the game
     function render() {
-        // Draw the frame
         drawFrame();
         
-        // Draw score
         context.fillStyle = "#000000";
         context.font = "24px Verdana";
         drawCenterText("Score:", 30, level.y+40, 150);
         drawCenterText(score, 30, level.y+70, 150);
         
-        // Draw buttons
         drawButtons();
         
-        // Draw level background
         var levelwidth = level.columns * level.tilewidth;
         var levelheight = level.rows * level.tileheight;
         context.fillStyle = "#000000";
         context.fillRect(level.x - 4, level.y - 4, levelwidth + 8, levelheight + 8);
         
-        // Render tiles
         renderTiles();
         
-        // Render clusters
         renderClusters();
         
-        // Render moves, when there are no clusters
         if (showmoves && clusters.length <= 0 && gamestate == gamestates.ready) {
             renderMoves();
         }
         
-        // Game Over overlay
         if (gameover) {
             context.fillStyle = "rgba(0, 0, 0, 0.8)";
             context.fillRect(level.x, level.y, levelwidth, levelheight);
@@ -279,37 +243,29 @@ window.onload = function() {
         }
     }
     
-    // Draw a frame with a border
     function drawFrame() {
-        // Draw background and a border
         context.fillStyle = "#d0d0d0";
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#e8eaec";
         context.fillRect(1, 1, canvas.width-2, canvas.height-2);
         
-        // Draw header
         context.fillStyle = "#303030";
         context.fillRect(0, 0, canvas.width, 65);
         
-        // Draw title
         context.fillStyle = "#ffffff";
         context.font = "24px Verdana";
         context.fillText("Match3", 10, 30);
         
-        // Display fps
         context.fillStyle = "#ffffff";
         context.font = "12px Verdana";
         context.fillText("Fps: " + fps, 13, 50);
     }
     
-    // Draw buttons
     function drawButtons() {
         for (var i=0; i<buttons.length; i++) {
-            // Draw button shape
             context.fillStyle = "#000000";
             context.fillRect(buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
             
-            // Draw button text
             context.fillStyle = "#ffffff";
             context.font = "18px Verdana";
             var textdim = context.measureText(buttons[i].text);
@@ -317,76 +273,58 @@ window.onload = function() {
         }
     }
     
-    // Render tiles
     function renderTiles() {
         for (var i=0; i<level.columns; i++) {
             for (var j=0; j<level.rows; j++) {
-                // Get the shift of the tile for animation
                 var shift = level.tiles[i][j].shift;
                 
-                // Calculate the tile coordinates
                 var coord = getTileCoordinate(i, j, 0, (animationtime / animationtimetotal) * shift);
                 
-                // Check if there is a tile present
                 if (level.tiles[i][j].type >= 0) {
-                    // Get the color of the tile
                     var col = tilecolors[level.tiles[i][j].type];
                     
-                    // Draw the tile using the color
                     drawTile(coord.tilex, coord.tiley, col[0], col[1], col[2]);
                 }
                 
-                // Draw the selected tile
                 if (level.selectedtile.selected) {
                     if (level.selectedtile.column == i && level.selectedtile.row == j) {
-                        // Draw a red tile
                         drawTile(coord.tilex, coord.tiley, 255, 0, 0);
                     }
                 }
             }
         }
         
-        // Render the swap animation
         if (gamestate == gamestates.resolve && (animationstate == 2 || animationstate == 3)) {
-            // Calculate the x and y shift
             var shiftx = currentmove.column2 - currentmove.column1;
             var shifty = currentmove.row2 - currentmove.row1;
 
-            // First tile
             var coord1 = getTileCoordinate(currentmove.column1, currentmove.row1, 0, 0);
             var coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1, (animationtime / animationtimetotal) * shiftx, (animationtime / animationtimetotal) * shifty);
             var col1 = tilecolors[level.tiles[currentmove.column1][currentmove.row1].type];
             
-            // Second tile
             var coord2 = getTileCoordinate(currentmove.column2, currentmove.row2, 0, 0);
             var coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2, (animationtime / animationtimetotal) * -shiftx, (animationtime / animationtimetotal) * -shifty);
             var col2 = tilecolors[level.tiles[currentmove.column2][currentmove.row2].type];
             
-            // Draw a black background
             drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
             drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
             
-            // Change the order, depending on the animation state
             if (animationstate == 2) {
-                // Draw the tiles
                 drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
                 drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
             } else {
-                // Draw the tiles
                 drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
                 drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
             }
         }
     }
     
-    // Get the tile coordinate
     function getTileCoordinate(column, row, columnoffset, rowoffset) {
         var tilex = level.x + (column + columnoffset) * level.tilewidth;
         var tiley = level.y + (row + rowoffset) * level.tileheight;
         return { tilex: tilex, tiley: tiley};
     }
     
-    // Draw a tile with a color
     function drawTile(x, y, r, g, b) {
         context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
         context.imageSmoothingEnabled = true;
@@ -439,32 +377,25 @@ window.onload = function() {
         context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
     
-    // Render clusters
     function renderClusters() {
         for (var i=0; i<clusters.length; i++) {
-            // Calculate the tile coordinates
             var coord = getTileCoordinate(clusters[i].column, clusters[i].row, 0, 0);
             
             if (clusters[i].horizontal) {
-                // Draw a horizontal line
                 context.fillStyle = "#00ff00";
                 context.fillRect(coord.tilex + level.tilewidth/2, coord.tiley + level.tileheight/2 - 4, (clusters[i].length - 1) * level.tilewidth, 8);
             } else {
-                // Draw a vertical line
                 context.fillStyle = "#0000ff";
                 context.fillRect(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2, 8, (clusters[i].length - 1) * level.tileheight);
             }
         }
     }
     
-    // Render moves
     function renderMoves() {
         for (var i=0; i<moves.length; i++) {
-            // Calculate coordinates of tile 1 and 2
             var coord1 = getTileCoordinate(moves[i].column1, moves[i].row1, 0, 0);
             var coord2 = getTileCoordinate(moves[i].column2, moves[i].row2, 0, 0);
             
-            // Draw a line from tile 1 to tile 2
             context.strokeStyle = "#ff0000";
             context.beginPath();
             context.moveTo(coord1.tilex + level.tilewidth/2, coord1.tiley + level.tileheight/2);
@@ -478,16 +409,12 @@ window.onload = function() {
         // Reset score
         score = 0;
         
-        // Set the gamestate to ready
         gamestate = gamestates.ready;
         
-        // Reset game over
         gameover = false;
         
-        // Create the level
         createLevel();
         
-        // Find initial clusters and moves
         findMoves();
         findClusters(); 
     }
@@ -496,23 +423,18 @@ window.onload = function() {
     function createLevel() {
         var done = false;
         
-        // Keep generating levels until it is correct
         while (!done) {
         
-            // Create a level with random tiles
             for (var i=0; i<level.columns; i++) {
                 for (var j=0; j<level.rows; j++) {
                     level.tiles[i][j].type = getRandomTile();
                 }
             }
             
-            // Resolve the clusters
             resolveClusters();
             
-            // Check if there are valid moves
             findMoves();
             
-            // Done when there is a valid move
             if (moves.length > 0) {
                 done = true;
             }
